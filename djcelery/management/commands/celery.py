@@ -11,9 +11,13 @@ base = celery.CeleryCommand(app=app)
 class Command(CeleryCommand):
     """The celery command."""
     help = 'celery commands, see celery help'
-    options = (CeleryCommand.options +
-               base.get_options() +
-               base.preload_options)
+    if base.get_options():
+        options = (CeleryCommand.options +
+                   base.get_options() +
+                   base.preload_options)
+    else:
+        options = (CeleryCommand.options +
+                   base.preload_options)
 
     def run_from_argv(self, argv):
         argv = self.handle_default_options(argv)
